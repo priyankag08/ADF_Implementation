@@ -5,11 +5,18 @@
 			{
 				"name": "Switch_To_Set_Client_Connection",
 				"type": "Switch",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "If Condition to set tID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"on": {
-						"value": "@pipeline().parameters.QP_Para_TenantID",
+						"value": "@variables('Var_TenantID')",
 						"type": "Expression"
 					},
 					"cases": [
@@ -75,7 +82,14 @@
 								{
 									"name": "B2_UserName",
 									"type": "SetVariable",
-									"dependsOn": [],
+									"dependsOn": [
+										{
+											"activity": "B2_ClientDBName",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "ClientUserID",
@@ -85,7 +99,14 @@
 								{
 									"name": "B2_UserPassword",
 									"type": "SetVariable",
-									"dependsOn": [],
+									"dependsOn": [
+										{
+											"activity": "B2_UserName",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "ClientPassword",
@@ -96,7 +117,14 @@
 									"name": "B2_ClientDBName",
 									"description": "",
 									"type": "SetVariable",
-									"dependsOn": [],
+									"dependsOn": [
+										{
+											"activity": "B2_DomainName",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "ClientDBName",
@@ -118,11 +146,48 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "If Condition to set tID",
+				"type": "IfCondition",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(pipeline().parameters.QP_Para_TenantID,'1')",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Set Var TID 1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Var_TenantID",
+								"value": "two"
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Set Var TID",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Var_TenantID",
+								"value": "one"
+							}
+						}
+					]
+				}
 			}
 		],
 		"parameters": {
 			"QP_Para_TenantID": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "@variables('Master_Var_TID')"
 			}
 		},
 		"variables": {
