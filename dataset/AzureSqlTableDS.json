@@ -10,15 +10,15 @@
 					"type": "Expression"
 				},
 				"ServerUserName": {
-					"value": "@dataset().UserName",
+					"value": "@dataset().UserNameDS",
 					"type": "Expression"
 				},
 				"ClientPassword": {
-					"value": "@dataset().UserPassword",
+					"value": "@dataset().UserPasswordDS",
 					"type": "Expression"
 				},
 				"ClientDBName": {
-					"value": "@dataset().DBName",
+					"value": "@dataset().DBNameDS",
 					"type": "Expression"
 				}
 			}
@@ -27,13 +27,13 @@
 			"ServerNameDS": {
 				"type": "String"
 			},
-			"DBName": {
+			"DBNameDS": {
 				"type": "String"
 			},
-			"UserName": {
+			"UserNameDS": {
 				"type": "String"
 			},
-			"UserPassword": {
+			"UserPasswordDS": {
 				"type": "String"
 			}
 		},

@@ -66,15 +66,15 @@
 													"value": "@pipeline().parameters.QP_Para_ClientServerName",
 													"type": "Expression"
 												},
-												"DBName": {
+												"DBNameDS": {
 													"value": "@pipeline().parameters.QP_Para_ClientDBName",
 													"type": "Expression"
 												},
-												"UserName": {
+												"UserNameDS": {
 													"value": "@pipeline().parameters.QP_Para_ClientUserName",
 													"type": "Expression"
 												},
-												"UserPassword": {
+												"UserPasswordDS": {
 													"value": "@pipeline().parameters.QP_Para_ClientPass",
 													"type": "Expression"
 												}
