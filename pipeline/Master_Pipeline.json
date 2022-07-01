@@ -344,7 +344,7 @@
 				"typeProperties": {
 					"variableName": "Master_Var_Type",
 					"value": {
-						"value": "@string(activity('Lookup_To_Read_Data_From_SP').output.value[0].QueueID)",
+						"value": "@string(activity('Lookup_To_Read_Data_From_SP').output.value[0].Type)",
 						"type": "Expression"
 					}
 				}
