@@ -133,7 +133,7 @@
 				"type": "IfCondition",
 				"dependsOn": [
 					{
-						"activity": "Set QueueStatus",
+						"activity": "Switch To Set Client Data",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -192,11 +192,161 @@
 									"QP_Para_TenantID": {
 										"value": "@variables('Master_Var_TID')",
 										"type": "Expression"
+									},
+									"QP_Para_Type": {
+										"value": "@variables('Master_Var_Type')",
+										"type": "Expression"
+									},
+									"QP_Para_QueueID": {
+										"value": "@variables('Master_Var_QID')",
+										"type": "Expression"
+									},
+									"QP_Para_FDID": {
+										"value": "@variables('Master_Var_FDID')",
+										"type": "Expression"
+									},
+									"QP_Para_FDVID": {
+										"value": "@variables('Master_Var_FDVID')",
+										"type": "Expression"
+									},
+									"QP_Para_ClientServerName": {
+										"value": "@variables('Master_Var_ClientDomainName')",
+										"type": "Expression"
+									},
+									"QP_Para_ClientDBName": {
+										"value": "@variables('Master_Var_ClientDBName')",
+										"type": "Expression"
+									},
+									"QP_Para_ClientUserName": {
+										"value": "@variables('Master_Var_ClientUserName')",
+										"type": "Expression"
+									},
+									"QP_Para_ClientPass": {
+										"value": "@variables('Master_Var_ClientPassword')",
+										"type": "Expression"
 									}
 								}
 							}
 						}
 					]
+				}
+			},
+			{
+				"name": "Switch To Set Client Data",
+				"type": "Switch",
+				"dependsOn": [
+					{
+						"activity": "Set TID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"on": {
+						"value": "@variables('Master_Var_TID')",
+						"type": "Expression"
+					},
+					"cases": [
+						{
+							"value": "2",
+							"activities": [
+								{
+									"name": "B2_ClientServerName_Master",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Master_Var_ClientDomainName",
+										"value": "b2targetdbserver.database.windows.net"
+									}
+								},
+								{
+									"name": "B2_ClientDBName_Master",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "B2_ClientServerName_Master",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Master_Var_ClientDBName",
+										"value": "B2_TargetDB"
+									}
+								},
+								{
+									"name": "B2_ClientUserName_Master",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "B2_ClientDBName_Master",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Master_Var_ClientUserName",
+										"value": "b2noobcoder"
+									}
+								},
+								{
+									"name": "B2_ClientPassword_Master",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "B2_ClientUserName_Master",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Master_Var_ClientPassword",
+										"value": "Rohit@14"
+									}
+								}
+							]
+						}
+					],
+					"defaultActivities": [
+						{
+							"name": "Wait Default Case",
+							"type": "Wait",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 1
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Set Type",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup_To_Read_Data_From_SP",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Master_Var_Type",
+					"value": {
+						"value": "@string(activity('Lookup_To_Read_Data_From_SP').output.value[0].Type)",
+						"type": "Expression"
+					}
 				}
 			}
 		],
