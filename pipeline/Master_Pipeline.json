@@ -328,6 +328,26 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Set Type",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup_To_Read_Data_From_SP",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Master_Var_Type",
+					"value": {
+						"value": "@string(activity('Lookup_To_Read_Data_From_SP').output.value[0].QueueID)",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"variables": {
