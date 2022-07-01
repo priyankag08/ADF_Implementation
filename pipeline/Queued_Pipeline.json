@@ -67,7 +67,7 @@
 							]
 						},
 						{
-							"value": "2",
+							"value": "two",
 							"activities": [
 								{
 									"name": "B2_DomainName",
