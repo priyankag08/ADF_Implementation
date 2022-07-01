@@ -1,0 +1,25 @@
+{
+	"name": "Client_ASDB_LS",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"parameters": {
+			"ServerDomainName": {
+				"type": "String"
+			},
+			"ServerUserName": {
+				"type": "String"
+			},
+			"ClientPassword": {
+				"type": "String"
+			},
+			"ClientDBName": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=@{linkedService().ServerDomainName};Initial Catalog=@{linkedService().ClientDBName};User ID=@{linkedService().ServerUserName};Password=@{linkedService().ClientPassword}"
+		}
+	}
+}
