@@ -10,11 +10,11 @@
 					"type": "Expression"
 				},
 				"ServerUserName": {
-					"value": "@dataset().DBName",
+					"value": "@dataset().UserName",
 					"type": "Expression"
 				},
 				"ClientPassword": {
-					"value": "@dataset().UserName",
+					"value": "@dataset().UserPassword",
 					"type": "Expression"
 				},
 				"ClientDBName": {
