@@ -238,6 +238,36 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "If Condition To Check QueueStatus",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Set QueueStatus",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(variables('Master_Var_QSTATUS'), 'Queued')",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "Execute Queued_Pipeline",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"waitOnCompletion": true
+							}
+						}
+					]
+				}
 			}
 		],
 		"variables": {
