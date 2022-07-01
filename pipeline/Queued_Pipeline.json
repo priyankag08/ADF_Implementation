@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Switch_To_Set_Client_Connection",
+				"name": "Switch Activity To Set Client Connection",
 				"type": "Switch",
 				"dependsOn": [],
 				"userProperties": [],
@@ -17,7 +17,7 @@
 							"value": "1",
 							"activities": [
 								{
-									"name": "B1_DomainName",
+									"name": "B1_ClientServerName",
 									"type": "SetVariable",
 									"dependsOn": [],
 									"userProperties": [],
@@ -27,9 +27,33 @@
 									}
 								},
 								{
-									"name": "B1_UserName",
+									"name": "B1_ClientDBName",
 									"type": "SetVariable",
-									"dependsOn": [],
+									"dependsOn": [
+										{
+											"activity": "B1_ClientServerName",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "ClientDBName",
+										"value": "B1_TargetDB"
+									}
+								},
+								{
+									"name": "B1_ClientUserName",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "B1_ClientDBName",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "ClientUserID",
@@ -37,24 +61,20 @@
 									}
 								},
 								{
-									"name": "B1_UserPassword",
+									"name": "B1_ClientPassword",
 									"type": "SetVariable",
-									"dependsOn": [],
+									"dependsOn": [
+										{
+											"activity": "B1_ClientUserName",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "ClientPassword",
 										"value": "Rohit@14"
-									}
-								},
-								{
-									"name": "B1_ClientDBName",
-									"description": "",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "ClientDBName",
-										"value": "B1_TargetDB"
 									}
 								}
 							]
@@ -63,7 +83,7 @@
 							"value": "2",
 							"activities": [
 								{
-									"name": "B2_DomainName",
+									"name": "B2_ClientServerName",
 									"type": "SetVariable",
 									"dependsOn": [],
 									"userProperties": [],
@@ -73,9 +93,33 @@
 									}
 								},
 								{
-									"name": "B2_UserName",
+									"name": "B2_ClientDBName",
 									"type": "SetVariable",
-									"dependsOn": [],
+									"dependsOn": [
+										{
+											"activity": "B2_ClientServerName",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "ClientDBName",
+										"value": "B2_TargetDB"
+									}
+								},
+								{
+									"name": "B2_ClientUserName",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "B2_ClientDBName",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "ClientUserID",
@@ -83,24 +127,20 @@
 									}
 								},
 								{
-									"name": "B2_UserPassword",
+									"name": "B2_ClientPassword",
 									"type": "SetVariable",
-									"dependsOn": [],
+									"dependsOn": [
+										{
+											"activity": "B2_ClientUserName",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "ClientPassword",
 										"value": "Rohit@14"
-									}
-								},
-								{
-									"name": "B2_ClientDBName",
-									"description": "",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "ClientDBName",
-										"value": "B2_TargetDB"
 									}
 								}
 							]
@@ -108,7 +148,7 @@
 					],
 					"defaultActivities": [
 						{
-							"name": "Default Condition",
+							"name": "Wait Default Case",
 							"type": "Wait",
 							"dependsOn": [],
 							"userProperties": [],
@@ -122,7 +162,8 @@
 		],
 		"parameters": {
 			"QP_Para_TenantID": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "@variables('Master_Var_TID')"
 			}
 		},
 		"variables": {
