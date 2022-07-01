@@ -14,7 +14,7 @@
 					},
 					"cases": [
 						{
-							"value": "Entire Design",
+							"value": "Design Version",
 							"activities": [
 								{
 									"name": "Copy Entire Design",
