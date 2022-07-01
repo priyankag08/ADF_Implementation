@@ -187,7 +187,13 @@
 									"referenceName": "Queued_Pipeline",
 									"type": "PipelineReference"
 								},
-								"waitOnCompletion": true
+								"waitOnCompletion": true,
+								"parameters": {
+									"QP_Para_TenantID": {
+										"value": "@variables('Master_Var_TID')",
+										"type": "Expression"
+									}
+								}
 							}
 						}
 					]
