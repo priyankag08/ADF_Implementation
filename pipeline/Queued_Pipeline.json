@@ -14,18 +14,133 @@
 					},
 					"cases": [
 						{
-							"value": "1"
+							"value": "1",
+							"activities": [
+								{
+									"name": "B1_ClientServerName",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "ClientServerName",
+										"value": "jamesbondserver.database.windows.net"
+									}
+								},
+								{
+									"name": "B1_ClientDBName",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "B1_ClientServerName",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "ClientDBName",
+										"value": "B1_TargetDB"
+									}
+								},
+								{
+									"name": "B1_ClientUserName",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "B1_ClientDBName",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "ClientUserID",
+										"value": "noobcoder"
+									}
+								},
+								{
+									"name": "B1_ClientPassword",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "B1_ClientUserName",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "ClientPassword",
+										"value": "Rohit@14"
+									}
+								}
+							]
 						},
 						{
 							"value": "2",
 							"activities": [
 								{
-									"name": "Wait Case 2",
-									"type": "Wait",
+									"name": "B2_ClientServerName",
+									"type": "SetVariable",
 									"dependsOn": [],
 									"userProperties": [],
 									"typeProperties": {
-										"waitTimeInSeconds": 1
+										"variableName": "ClientServerName",
+										"value": "b2targetdbserver.database.windows.net"
+									}
+								},
+								{
+									"name": "B2_ClientDBName",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "B2_ClientServerName",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "ClientDBName",
+										"value": "B2_TargetDB"
+									}
+								},
+								{
+									"name": "B2_ClientUserName",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "B2_ClientDBName",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "ClientUserID",
+										"value": "b2noobcoder"
+									}
+								},
+								{
+									"name": "B2_ClientPassword",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "B2_ClientUserName",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "ClientPassword",
+										"value": "Rohit@14"
 									}
 								}
 							]
