@@ -3,132 +3,29 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Switch_To_Set_Client_Connection",
+				"name": "Switch Activity To Set Client Connection",
 				"type": "Switch",
-				"dependsOn": [
-					{
-						"activity": "If Condition to set tID",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"on": {
-						"value": "@variables('Var_TenantID')",
+						"value": "@pipeline().parameters.QP_Para_TenantID",
 						"type": "Expression"
 					},
 					"cases": [
 						{
-							"value": "1",
-							"activities": [
-								{
-									"name": "B1_DomainName",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "ClientServerName",
-										"value": "jamesbondserver.database.windows.net"
-									}
-								},
-								{
-									"name": "B1_UserName",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "ClientUserID",
-										"value": "noobcoder"
-									}
-								},
-								{
-									"name": "B1_UserPassword",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "ClientPassword",
-										"value": "Rohit@14"
-									}
-								},
-								{
-									"name": "B1_ClientDBName",
-									"description": "",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "ClientDBName",
-										"value": "B1_TargetDB"
-									}
-								}
-							]
+							"value": "1"
 						},
 						{
-							"value": "two",
+							"value": "2",
 							"activities": [
 								{
-									"name": "B2_DomainName",
-									"type": "SetVariable",
+									"name": "Wait Case 2",
+									"type": "Wait",
 									"dependsOn": [],
 									"userProperties": [],
 									"typeProperties": {
-										"variableName": "ClientServerName",
-										"value": "b2targetdbserver.database.windows.net"
-									}
-								},
-								{
-									"name": "B2_UserName",
-									"type": "SetVariable",
-									"dependsOn": [
-										{
-											"activity": "B2_ClientDBName",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "ClientUserID",
-										"value": "b2noobcoder"
-									}
-								},
-								{
-									"name": "B2_UserPassword",
-									"type": "SetVariable",
-									"dependsOn": [
-										{
-											"activity": "B2_UserName",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "ClientPassword",
-										"value": "Rohit@14"
-									}
-								},
-								{
-									"name": "B2_ClientDBName",
-									"description": "",
-									"type": "SetVariable",
-									"dependsOn": [
-										{
-											"activity": "B2_DomainName",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "ClientDBName",
-										"value": "B2_TargetDB"
+										"waitTimeInSeconds": 1
 									}
 								}
 							]
@@ -136,48 +33,12 @@
 					],
 					"defaultActivities": [
 						{
-							"name": "Default Condition",
+							"name": "Wait Default Case",
 							"type": "Wait",
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
 								"waitTimeInSeconds": 1
-							}
-						}
-					]
-				}
-			},
-			{
-				"name": "If Condition to set tID",
-				"type": "IfCondition",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"expression": {
-						"value": "@equals(pipeline().parameters.QP_Para_TenantID,'1')",
-						"type": "Expression"
-					},
-					"ifFalseActivities": [
-						{
-							"name": "Set Var TID 1",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "Var_TenantID",
-								"value": "two"
-							}
-						}
-					],
-					"ifTrueActivities": [
-						{
-							"name": "Set Var TID",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "Var_TenantID",
-								"value": "one"
 							}
 						}
 					]
