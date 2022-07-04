@@ -29,214 +29,11 @@
 				}
 			},
 			{
-				"name": "Set QID",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Lookup_To_Read_Data_From_SP",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "Master_Var_QID",
-					"value": {
-						"value": "@string(activity('Lookup_To_Read_Data_From_SP').output.value[0].QueueID)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Set FDID",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Lookup_To_Read_Data_From_SP",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "Master_Var_FDID",
-					"value": {
-						"value": "@string(activity('Lookup_To_Read_Data_From_SP').output.value[0].FormDesignID)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Set FDVID",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Lookup_To_Read_Data_From_SP",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "Master_Var_FDVID",
-					"value": {
-						"value": "@string(activity('Lookup_To_Read_Data_From_SP').output.value[0].FormDesignVersionID)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Set QueueStatus",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Lookup_To_Read_Data_From_SP",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "Master_Var_QSTATUS",
-					"value": {
-						"value": "@string(activity('Lookup_To_Read_Data_From_SP').output.value[0].QueueStatus)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Set TID",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Lookup_To_Read_Data_From_SP",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "Master_Var_TID",
-					"value": {
-						"value": "@string(activity('Lookup_To_Read_Data_From_SP').output.value[0].TenantID)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "If Condition To Check QueueStatus",
-				"type": "IfCondition",
-				"dependsOn": [
-					{
-						"activity": "Switch To Set Client Data",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"expression": {
-						"value": "@equals(variables('Master_Var_QSTATUS'), '1')",
-						"type": "Expression"
-					},
-					"ifFalseActivities": [
-						{
-							"name": "Stored Procedure To Change QueStatus",
-							"type": "SqlServerStoredProcedure",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"storedProcedureName": "[dbo].[SP_UpdateQueueStatusToQueued]",
-								"storedProcedureParameters": {
-									"QID": {
-										"value": {
-											"value": "@int(variables('Master_Var_QID'))",
-											"type": "Expression"
-										},
-										"type": "Int32"
-									}
-								}
-							},
-							"linkedServiceName": {
-								"referenceName": "SqlServerLS",
-								"type": "LinkedServiceReference"
-							}
-						}
-					],
-					"ifTrueActivities": [
-						{
-							"name": "Execute Queued_Pipeline",
-							"type": "ExecutePipeline",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "Queued_Pipeline",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true,
-								"parameters": {
-									"QP_Para_TenantID": {
-										"value": "@variables('Master_Var_TID')",
-										"type": "Expression"
-									},
-									"QP_Para_Type": {
-										"value": "@variables('Master_Var_Type')",
-										"type": "Expression"
-									},
-									"QP_Para_QueueID": {
-										"value": "@variables('Master_Var_QID')",
-										"type": "Expression"
-									},
-									"QP_Para_FDID": {
-										"value": "@variables('Master_Var_FDID')",
-										"type": "Expression"
-									},
-									"QP_Para_FDVID": {
-										"value": "@variables('Master_Var_FDVID')",
-										"type": "Expression"
-									},
-									"QP_Para_ClientServerName": {
-										"value": "@variables('Master_Var_ClientDomainName')",
-										"type": "Expression"
-									},
-									"QP_Para_ClientDBName": {
-										"value": "@variables('Master_Var_ClientDBName')",
-										"type": "Expression"
-									},
-									"QP_Para_ClientUserName": {
-										"value": "@variables('Master_Var_ClientUserName')",
-										"type": "Expression"
-									},
-									"QP_Para_ClientPass": {
-										"value": "@variables('Master_Var_ClientPassword')",
-										"type": "Expression"
-									}
-								}
-							}
-						}
-					]
-				}
-			},
-			{
 				"name": "Switch To Set Client Data",
 				"type": "Switch",
 				"dependsOn": [
 					{
-						"activity": "Set TID",
+						"activity": "Lookup_To_Read_Data_From_SP",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -245,7 +42,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"on": {
-						"value": "@variables('Master_Var_TID')",
+						"value": "@activity('Lookup_To_Read_Data_From_SP').output.value[0].TenantID",
 						"type": "Expression"
 					},
 					"cases": [
@@ -396,11 +193,11 @@
 				}
 			},
 			{
-				"name": "Set Type",
-				"type": "SetVariable",
+				"name": "Execute Queued_Pipeline",
+				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Lookup_To_Read_Data_From_SP",
+						"activity": "Switch To Set Client Data",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -408,85 +205,53 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "Master_Var_Type",
-					"value": {
-						"value": "@string(activity('Lookup_To_Read_Data_From_SP').output.value[0].Type)",
-						"type": "Expression"
+					"pipeline": {
+						"referenceName": "Queued_Pipeline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"QP_Para_TenantID": {
+							"value": "@activity('Lookup_To_Read_Data_From_SP').output.value[0].TenantID",
+							"type": "Expression"
+						},
+						"QP_Para_Type": {
+							"value": "@activity('Lookup_To_Read_Data_From_SP').output.value[0].Type",
+							"type": "Expression"
+						},
+						"QP_Para_QueueID": {
+							"value": "@activity('Lookup_To_Read_Data_From_SP').output.value[0].QueueID",
+							"type": "Expression"
+						},
+						"QP_Para_FDID": {
+							"value": "@activity('Lookup_To_Read_Data_From_SP').output.value[0].FormDesignID",
+							"type": "Expression"
+						},
+						"QP_Para_FDVID": {
+							"value": "@activity('Lookup_To_Read_Data_From_SP').output.value[0].FormDesignVersionID",
+							"type": "Expression"
+						},
+						"QP_Para_ClientServerName": {
+							"value": "@variables('Master_Var_ClientDomainName')",
+							"type": "Expression"
+						},
+						"QP_Para_ClientDBName": {
+							"value": "@variables('Master_Var_ClientDBName')",
+							"type": "Expression"
+						},
+						"QP_Para_ClientUserName": {
+							"value": "@variables('Master_Var_ClientUserName')",
+							"type": "Expression"
+						},
+						"QP_Para_ClientPass": {
+							"value": "@variables('Master_Var_ClientPassword')",
+							"type": "Expression"
+						}
 					}
 				}
-			},
-			{
-				"name": "If Condition1",
-				"type": "IfCondition",
-				"dependsOn": [
-					{
-						"activity": "Set FDVID",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": []
-			},
-			{
-				"name": "Switch1",
-				"type": "Switch",
-				"dependsOn": [
-					{
-						"activity": "If Condition1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"cases": []
-				}
-			},
-			{
-				"name": "Stored procedure1",
-				"type": "SqlServerStoredProcedure",
-				"dependsOn": [
-					{
-						"activity": "If Condition1",
-						"dependencyConditions": [
-							"Failed"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": []
 			}
 		],
 		"variables": {
-			"Master_Var_QID": {
-				"type": "String"
-			},
-			"Master_Var_FDID": {
-				"type": "String"
-			},
-			"Master_Var_FDVID": {
-				"type": "String"
-			},
-			"Master_Var_TID": {
-				"type": "String"
-			},
-			"Master_Var_QSTATUS": {
-				"type": "String"
-			},
-			"Master_Var_IsRequeued": {
-				"type": "String"
-			},
-			"Master_Var_Type": {
-				"type": "String"
-			},
 			"Master_Var_ClientDomainName": {
 				"type": "String"
 			},
