@@ -314,6 +314,72 @@
 									}
 								}
 							]
+						},
+						{
+							"value": "1",
+							"activities": [
+								{
+									"name": "B1_ClientServerName_Master",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Master_Var_ClientDomainName",
+										"value": "jamesbondserver.database.windows.net"
+									}
+								},
+								{
+									"name": "B1_ClientDBName_Master",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "B1_ClientServerName_Master",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Master_Var_ClientDBName",
+										"value": "B1_TargetDB"
+									}
+								},
+								{
+									"name": "B1_ClientUserName_Master",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "B1_ClientDBName_Master",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Master_Var_ClientUserName",
+										"value": "noobcoder"
+									}
+								},
+								{
+									"name": "B1_ClientPassword_Master",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "B1_ClientUserName_Master",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Master_Var_ClientPassword",
+										"value": "Rohit@14"
+									}
+								}
+							]
 						}
 					],
 					"defaultActivities": [
