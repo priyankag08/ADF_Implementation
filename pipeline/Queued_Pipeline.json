@@ -68,10 +68,6 @@
 											"referenceName": "AzureSqlTableDS",
 											"type": "DatasetReference",
 											"parameters": {
-												"ServerNameDS": {
-													"value": "@pipeline().parameters.QP_Para_ClientServerName",
-													"type": "Expression"
-												},
 												"DBNameDS": {
 													"value": "@pipeline().parameters.QP_Para_ClientDBName",
 													"type": "Expression"
@@ -190,7 +186,6 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[SP_UpdateQueueStatusToComplete]",
 					"storedProcedureParameters": {
 						"QID": {
 							"value": {
