@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup_To_Data_From_SP",
+				"name": "Lookup_To_ReadData_From_SP",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -26,8 +26,47 @@
 						"type": "DatasetReference"
 					}
 				}
+			},
+			{
+				"name": "Switch_To_Set_Clients_Data",
+				"type": "Switch",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"cases": [
+						{
+							"value": "Case1",
+							"activities": [
+								{
+									"name": "B1_ClientServerName",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Master_Var_ClientDomainName",
+										"value": "jamesbondserver.database.windows.net"
+									}
+								},
+								{
+									"name": "Set variable1",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": []
+								}
+							]
+						},
+						{
+							"value": "Case2"
+						}
+					]
+				}
 			}
 		],
+		"variables": {
+			"Master_Var_ClientDomainName": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }

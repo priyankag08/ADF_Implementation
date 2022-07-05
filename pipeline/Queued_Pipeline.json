@@ -1,0 +1,11 @@
+{
+	"name": "Queued_Pipeline",
+	"properties": {
+		"variables": {
+			"Master_Var_ClientDomainName": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
