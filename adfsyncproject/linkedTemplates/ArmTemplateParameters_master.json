@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adfsyncproject"
+		},
+		"AzureSqlDatabaseLS_connectionString": {
+			"value": ""
+		},
+		"Client_ASDB_LS_connectionString": {
+			"value": ""
+		},
+		"SqlServerLS_connectionString": {
+			"value": ""
+		},
+		"SqlServer_LS_connectionString": {
+			"value": ""
+		},
+		"SelfHostedIR_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/e15d0c75-6324-456e-901f-e24236ea4bf0/resourcegroups/TestEnvironment/providers/Microsoft.DataFactory/factories/adfmyadfdemo/integrationruntimes/SelfHostedIR"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
