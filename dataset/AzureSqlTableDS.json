@@ -36,6 +36,7 @@
 			"UserPasswordDS": {
 				"type": "String"
 			}
+			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
@@ -44,6 +45,7 @@
 			"schema": "dbo",
 			"table": "FormDesign"
 		}
+		"schema": []
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }

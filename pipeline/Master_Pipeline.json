@@ -17,6 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
+						"sqlReaderStoredProcedureName": "[dbo].[sp_GetQueuedOrFailedRecord]",
 						"sqlReaderStoredProcedureName": "[dbo].[SP_Get_Queued_Or_Failed_Record]",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
@@ -29,6 +30,8 @@
 				}
 			},
 			{
+				"name": "Switch To Set Client Data",
+				"type": "Switch",
 				"name": "Set QID",
 				"type": "SetVariable",
 				"dependsOn": [
@@ -129,110 +132,7 @@
 				}
 			},
 			{
-				"name": "If Condition To Check QueueStatus",
-				"type": "IfCondition",
-				"dependsOn": [
-					{
-						"activity": "Switch To Set Client Data",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"expression": {
-						"value": "@equals(variables('Master_Var_QSTATUS'), '1')",
-						"type": "Expression"
-					},
-					"ifFalseActivities": [
-						{
-							"name": "Stored Procedure To Change QueStatus",
-							"type": "SqlServerStoredProcedure",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"storedProcedureName": "[dbo].[SP_UpdateQueueStatusToQueued]",
-								"storedProcedureParameters": {
-									"QID": {
-										"value": {
-											"value": "@int(variables('Master_Var_QID'))",
-											"type": "Expression"
-										},
-										"type": "Int32"
-									}
-								}
-							},
-							"linkedServiceName": {
-								"referenceName": "SqlServerLS",
-								"type": "LinkedServiceReference"
-							}
-						}
-					],
-					"ifTrueActivities": [
-						{
-							"name": "Execute Queued_Pipeline",
-							"type": "ExecutePipeline",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "Queued_Pipeline",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true,
-								"parameters": {
-									"QP_Para_TenantID": {
-										"value": "@variables('Master_Var_TID')",
-										"type": "Expression"
-									},
-									"QP_Para_Type": {
-										"value": "@variables('Master_Var_Type')",
-										"type": "Expression"
-									},
-									"QP_Para_QueueID": {
-										"value": "@variables('Master_Var_QID')",
-										"type": "Expression"
-									},
-									"QP_Para_FDID": {
-										"value": "@variables('Master_Var_FDID')",
-										"type": "Expression"
-									},
-									"QP_Para_FDVID": {
-										"value": "@variables('Master_Var_FDVID')",
-										"type": "Expression"
-									},
-									"QP_Para_ClientServerName": {
-										"value": "@variables('Master_Var_ClientDomainName')",
-										"type": "Expression"
-									},
-									"QP_Para_ClientDBName": {
-										"value": "@variables('Master_Var_ClientDBName')",
-										"type": "Expression"
-									},
-									"QP_Para_ClientUserName": {
-										"value": "@variables('Master_Var_ClientUserName')",
-										"type": "Expression"
-									},
-									"QP_Para_ClientPass": {
-										"value": "@variables('Master_Var_ClientPassword')",
-										"type": "Expression"
-									}
-								}
-							}
-						}
-					]
-				}
-			},
-			{
-				"name": "Switch To Set Client Data",
+				"name": "Switch_To_Set_Client_Connection",
 				"type": "Switch",
 				"dependsOn": [
 					{
@@ -245,25 +145,30 @@
 				"userProperties": [],
 				"typeProperties": {
 					"on": {
+						"value": "@activity('Lookup_To_Read_Data_From_SP').output.value[0].TenantID",
 						"value": "@variables('Master_Var_TID')",
 						"type": "Expression"
 					},
 					"cases": [
 						{
 							"value": "2",
+							"value": "1",
 							"activities": [
 								{
 									"name": "B2_ClientServerName_Master",
+									"name": "B1_DomainName",
 									"type": "SetVariable",
 									"dependsOn": [],
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "Master_Var_ClientDomainName",
 										"value": "b2targetdbserver.database.windows.net"
+										"value": "jamesbondserver.database.windows.net"
 									}
 								},
 								{
 									"name": "B2_ClientDBName_Master",
+									"name": "B1_UserName",
 									"type": "SetVariable",
 									"dependsOn": [
 										{
@@ -273,14 +178,18 @@
 											]
 										}
 									],
+									"dependsOn": [],
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "Master_Var_ClientDBName",
 										"value": "B2_TargetDB"
+										"variableName": "Master_Var_ClientUserName",
+										"value": "noobcoder"
 									}
 								},
 								{
 									"name": "B2_ClientUserName_Master",
+									"name": "B1_UserPassword",
 									"type": "SetVariable",
 									"dependsOn": [
 										{
@@ -290,14 +199,18 @@
 											]
 										}
 									],
+									"dependsOn": [],
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "Master_Var_ClientUserName",
 										"value": "b2noobcoder"
+										"variableName": "Master_Var_ClientPassword",
+										"value": "Rohit@14"
 									}
 								},
 								{
 									"name": "B2_ClientPassword_Master",
+									"name": "B1_ClientDBName",
 									"type": "SetVariable",
 									"dependsOn": [
 										{
@@ -307,29 +220,36 @@
 											]
 										}
 									],
+									"dependsOn": [],
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "Master_Var_ClientPassword",
 										"value": "Rohit@14"
+										"variableName": "Master_Var_ClientDBName",
+										"value": "B1_TargetDB"
 									}
 								}
 							]
 						},
 						{
 							"value": "1",
+							"value": "2",
 							"activities": [
 								{
 									"name": "B1_ClientServerName_Master",
+									"name": "B2_DomainName",
 									"type": "SetVariable",
 									"dependsOn": [],
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "Master_Var_ClientDomainName",
 										"value": "jamesbondserver.database.windows.net"
+										"value": "b2targetdbserver.database.windows.net"
 									}
 								},
 								{
 									"name": "B1_ClientDBName_Master",
+									"name": "B2_UserName",
 									"type": "SetVariable",
 									"dependsOn": [
 										{
@@ -339,14 +259,18 @@
 											]
 										}
 									],
+									"dependsOn": [],
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "Master_Var_ClientDBName",
 										"value": "B1_TargetDB"
+										"variableName": "Master_Var_ClientUserName",
+										"value": "b2noobcoder"
 									}
 								},
 								{
 									"name": "B1_ClientUserName_Master",
+									"name": "B2_UserPassword",
 									"type": "SetVariable",
 									"dependsOn": [
 										{
@@ -356,14 +280,18 @@
 											]
 										}
 									],
+									"dependsOn": [],
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "Master_Var_ClientUserName",
 										"value": "noobcoder"
+										"variableName": "Master_Var_ClientPassword",
+										"value": "Rohit@14"
 									}
 								},
 								{
 									"name": "B1_ClientPassword_Master",
+									"name": "B2_ClientDBName",
 									"type": "SetVariable",
 									"dependsOn": [
 										{
@@ -373,15 +301,18 @@
 											]
 										}
 									],
+									"dependsOn": [],
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "Master_Var_ClientPassword",
 										"value": "Rohit@14"
+										"variableName": "Master_Var_ClientDBName",
+										"value": "B2_TargetDB"
 									}
 								}
 							]
 						}
-					],
+						],
 					"defaultActivities": [
 						{
 							"name": "Wait Default Case",
@@ -394,13 +325,13 @@
 						}
 					]
 				}
-			},
+				},
 			{
-				"name": "Set Type",
-				"type": "SetVariable",
+				"name": "Execute Queued_Pipeline",
+				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Lookup_To_Read_Data_From_SP",
+						"activity": "Switch To Set Client Data",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -408,13 +339,58 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "Master_Var_Type",
-					"value": {
-						"value": "@string(activity('Lookup_To_Read_Data_From_SP').output.value[0].Type)",
-						"type": "Expression"
+					"pipeline": {
+						"referenceName": "Queued_Pipeline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"QP_Para_TenantID": {
+							"value": "@activity('Lookup_To_Read_Data_From_SP').output.value[0].TenantID",
+							"type": "Expression"
+						},
+						"QP_Para_Type": {
+							"value": "@activity('Lookup_To_Read_Data_From_SP').output.value[0].Type",
+							"type": "Expression"
+						},
+						"QP_Para_QueueID": {
+							"value": "@activity('Lookup_To_Read_Data_From_SP').output.value[0].QueueID",
+							"type": "Expression"
+						},
+						"QP_Para_FDID": {
+							"value": "@activity('Lookup_To_Read_Data_From_SP').output.value[0].FormDesignID",
+							"type": "Expression"
+						},
+						"QP_Para_FDVID": {
+							"value": "@activity('Lookup_To_Read_Data_From_SP').output.value[0].FormDesignVersionID",
+							"type": "Expression"
+						},
+						"QP_Para_ClientServerName": {
+							"value": "@variables('Master_Var_ClientDomainName')",
+							"type": "Expression"
+						},
+						"QP_Para_ClientDBName": {
+							"value": "@variables('Master_Var_ClientDBName')",
+							"type": "Expression"
+						},
+						"QP_Para_ClientUserName": {
+							"value": "@variables('Master_Var_ClientUserName')",
+							"type": "Expression"
+						},
+						"QP_Para_ClientPass": {
+							"value": "@variables('Master_Var_ClientPassword')",
+							"type": "Expression"
+						}
 					}
 				}
+			},
+			{
+				"name": "If Condition To Check Lookup Output Is Empty Or Not",
+				"type": "IfCondition",
+				"dependsOn": [],
+				"userProperties": []
 			}
+			
 		],
 		"variables": {
 			"Master_Var_QID": {

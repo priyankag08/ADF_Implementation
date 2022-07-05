@@ -12,6 +12,7 @@
 			"schema": "Trgr",
 			"table": "FormDesign"
 		}
+		"schema": []
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }
