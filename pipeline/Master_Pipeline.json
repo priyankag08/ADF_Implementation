@@ -43,15 +43,19 @@
 									"dependsOn": [],
 									"userProperties": [],
 									"typeProperties": {
-										"variableName": "Master_Var_ClientDomainName",
+										"variableName": "ClientDomainName",
 										"value": "jamesbondserver.database.windows.net"
 									}
 								},
 								{
-									"name": "Set variable1",
+									"name": "B1_ClientDBName",
 									"type": "SetVariable",
 									"dependsOn": [],
-									"userProperties": []
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "ClientDBName",
+										"value": "B1_TargetDB"
+									}
 								}
 							]
 						},
@@ -64,6 +68,15 @@
 		],
 		"variables": {
 			"Master_Var_ClientDomainName": {
+				"type": "String"
+			},
+			"B1_ClientDBName": {
+				"type": "String"
+			},
+			"ClientDBName": {
+				"type": "String"
+			},
+			"ClientDomainName": {
 				"type": "String"
 			}
 		},
