@@ -26,57 +26,31 @@
 						"type": "DatasetReference"
 					}
 				}
-			},
-			{
-				"name": "Switch_To_Set_Clients_Data",
-				"type": "Switch",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"cases": [
-						{
-							"value": "Case1",
-							"activities": [
-								{
-									"name": "B1_ClientServerName",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "ClientDomainName",
-										"value": "jamesbondserver.database.windows.net"
-									}
-								},
-								{
-									"name": "B1_ClientDBName",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "ClientDBName",
-										"value": "B1_TargetDB"
-									}
-								}
-							]
-						},
-						{
-							"value": "Case2"
-						}
-					]
-				}
 			}
 		],
 		"variables": {
-			"Master_Var_ClientDomainName": {
+			"B1_ClientDomainName": {
 				"type": "String"
 			},
 			"B1_ClientDBName": {
 				"type": "String"
 			},
-			"ClientDBName": {
+			"B1_ClientUserName": {
 				"type": "String"
 			},
-			"ClientDomainName": {
+			"B1_ClientPassword": {
+				"type": "String"
+			},
+			"B2_ClientDomainName": {
+				"type": "String"
+			},
+			"B2_ClientDBName": {
+				"type": "String"
+			},
+			"B2_ClientUserName": {
+				"type": "String"
+			},
+			"B2_ClientPassword": {
 				"type": "String"
 			}
 		},
